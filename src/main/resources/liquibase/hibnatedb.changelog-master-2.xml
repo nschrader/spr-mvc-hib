@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <include file="liquibase/hibnatedb.changelog-master-1.xml"/>
+  
+  <changeSet runAlways="true" author="Nick Schrader" id="2">
+    <preConditions onFail="CONTINUE">
+      <not>
+	<columnExists tableName="teams" columnName="fk_organization"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="teams">
+      <column name="fk_organization" type="int">
+	<constraints foreignKeyName="organizations.id"/>
+      </column>
+    </addColumn>
+  </changeSet>
+  
+  <changeSet runAlways="true" author="Nick Schrader" id="3">
+    <preConditions onFail="CONTINUE">
+      <not>
+	<tableExists tableName="organizations"/>
+      </not>
+    </preConditions>
+    <createTable tableName="organizations">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" unique="true"/>
+      </column>
+      <column name="name" type="varchar(255)"/>
+    </createTable>
+  </changeSet>
+  
+  <changeSet runAlways="true" author="Nick Schrader" id="4">
+    <preConditions onFail="CONTINUE">
+      <not>
+	<tableExists tableName="members"/>
+      </not>
+    </preConditions>
+    <createTable tableName="members">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" unique="true"/>
+      </column>
+      <column name="name" type="varchar(255)"/>
+    </createTable>
+  </changeSet>
+  
+  <changeSet runAlways="true" author="Nick Schrader" id="5">
+    <preConditions onFail="CONTINUE">
+      <not>
+	<tableExists tableName="team_member"/>
+      </not>
+    </preConditions>
+    <createTable tableName="team_member">
+      <column name="id_team" type="int">
+	<constraints foreignKeyName="teams.id"/>
+      </column>
+      <column name="id_member" type="int">
+	<constraints foreignKeyName="members.id"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>
