@@ -77,6 +77,16 @@ public class TeamControllerTest extends JUnitBase {
 	}
 	
 	@Test
+	public void testTeamAddPageWithoutOrganizations() throws Exception {
+		template.execute("TRUNCATE TABLE organizations;");
+		mockMvc.perform(get("/team/add"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("home"))
+			.andExpect(model().attributeExists("message"))
+			.andExpect(model().attribute("page", "home"));
+	}
+	
+	@Test
 	public void testTeamEditPage() throws Exception {
 		final int id = 1;
 		mockMvc.perform(get("/team/edit/{id}", id))
@@ -86,6 +96,17 @@ public class TeamControllerTest extends JUnitBase {
 			.andExpect(model().attributeExists("team"))
 			.andExpect(model().attribute("page", "team"));
 		mockMvc.perform(post("/team/edit/{id}", id).param("name", "WorstTeamEver").param("rating", "10").param("organization", "1"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("home"))
+			.andExpect(model().attributeExists("message"))
+			.andExpect(model().attribute("page", "home"));
+	}
+	
+	@Test
+	public void testTeamEditPageWithoutOrganizations() throws Exception {
+		final int id = 1;
+		template.execute("TRUNCATE TABLE organizations;");
+		mockMvc.perform(get("/team/edit/{id}", id))
 			.andExpect(status().isOk())
 			.andExpect(view().name("home"))
 			.andExpect(model().attributeExists("message"))

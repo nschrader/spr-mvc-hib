@@ -20,7 +20,7 @@
 	<h1><spring:message code="nav.member.edit"/></h1>
 	<p><spring:message code="emf.description"/></p>
 	<p>${message}</p>
-	<form:form method="post" commandName="member" action="${pageContext.request.contextPath}/member/edit/${member.id}.html">
+	<form:form method="post" commandName="member" action="${pageContext.request.contextPath}/member/edit/${member.id}.html" onsubmit="if (this.name.value == '' || this.teams.options.selectedIndex == -1) {return false;}">
 	  <table class="table">
 	    <tbody>
 	      <tr>

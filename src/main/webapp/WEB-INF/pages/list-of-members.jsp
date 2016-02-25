@@ -39,11 +39,11 @@
 		  </c:forEach>
 		</td>
 		<td>
-		  <a href="${pageContext.request.contextPath}/member/edit/${member.id}.html">
+		  <a class="edit" href="${pageContext.request.contextPath}/member/edit/${member.id}.html">
 		    <spring:message code="nav.member.edit"/>
 		  </a>
 		  <br/>
-		  <a href="${pageContext.request.contextPath}/member/delete/${member.id}.html">
+		  <a class="delete" href="${pageContext.request.contextPath}/member/delete/${member.id}.html">
 		    <spring:message code="lom.table.delete"/>
 		  </a>
 		  <br/>

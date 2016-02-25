@@ -11,7 +11,7 @@ import com.sprhib.model.Organization;
  * An inhereited class is surely not the best way to avoid code redundancy, but
  * is increadibly simple! A JUnit rule takes twice the amount of code...
  */
-public class JUnitBase {
+public abstract class JUnitBase {
 	protected JdbcTemplate database(SpringLiquibase l) {
 		return new JdbcTemplate(l.getDataSource());
 	}

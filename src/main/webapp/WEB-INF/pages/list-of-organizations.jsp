@@ -33,11 +33,11 @@
 		<td>${organization.id}</td>
 		<td>${organization.name}</td>
 		<td>
-		  <a href="${pageContext.request.contextPath}/organization/edit/${organization.id}.html">
+		  <a class="edit" href="${pageContext.request.contextPath}/organization/edit/${organization.id}.html">
 		    <spring:message code="nav.organization.edit"/>
 		  </a>
 		  <br/>
-		  <a href="${pageContext.request.contextPath}/organization/delete/${organization.id}.html">
+		  <a class="delete" href="${pageContext.request.contextPath}/organization/delete/${organization.id}.html">
 		    <spring:message code="loo.table.delete"/>
 		  </a>
 		  <br/>

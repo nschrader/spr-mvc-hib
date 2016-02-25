@@ -1,6 +1,7 @@
 package com.sprhib.controller;
 
 import java.util.Map;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,10 +33,18 @@ public class TeamController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView addTeamPage() {
-		ModelAndView modelAndView = new ModelAndView("add-team-form");
-		modelAndView.addObject("organizations", organizationService.getOrganizations());
-		modelAndView.addObject("team", new Team());
-		modelAndView.addObject("page", "team");
+		ModelAndView modelAndView;
+		List<Organization> organizations = organizationService.getOrganizations();
+		if (organizations.isEmpty()) {
+			modelAndView = new ModelAndView("home");
+			modelAndView.addObject("message", messages.getMessage("tC.added.error", null, LocaleContextHolder.getLocale()));	
+			modelAndView.addObject("page", "home");
+		} else {
+			modelAndView = new ModelAndView("add-team-form");
+			modelAndView.addObject("organizations", organizations);
+			modelAndView.addObject("team", new Team());
+			modelAndView.addObject("page", "team");
+		}
 		return modelAndView;
 	}
 	
@@ -50,7 +59,7 @@ public class TeamController {
 			throw new Exception();
 		teamService.addTeam(team);
 		ModelAndView modelAndView = new ModelAndView("home");
-		modelAndView.addObject("message", messages.getMessage("tC.added", null, LocaleContextHolder.getLocale()));	
+		modelAndView.addObject("message", messages.getMessage("tC.added.success", null, LocaleContextHolder.getLocale()));	
 		modelAndView.addObject("page", "home");
 		return modelAndView;
 	}
@@ -70,11 +79,19 @@ public class TeamController {
 	
 	@RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
 	public ModelAndView editTeamPage(@PathVariable Integer id) {
-		ModelAndView modelAndView = new ModelAndView("edit-team-form");
-		Team team = teamService.getTeam(id);
-		modelAndView.addObject("organizations", organizationService.getOrganizations());
-		modelAndView.addObject("team", team);
-		modelAndView.addObject("page", "team");
+		ModelAndView modelAndView;
+		List<Organization> organizations = organizationService.getOrganizations();
+		if (organizations.isEmpty()) {
+			modelAndView = new ModelAndView("home");
+			modelAndView.addObject("message", messages.getMessage("tC.edited.error", null, LocaleContextHolder.getLocale()));	
+			modelAndView.addObject("page", "home");
+		} else {
+			modelAndView = new ModelAndView("edit-team-form");
+			Team team = teamService.getTeam(id);
+			modelAndView.addObject("organizations", organizationService.getOrganizations());
+			modelAndView.addObject("team", team);
+			modelAndView.addObject("page", "team");
+		}
 		return modelAndView;
 	}
 	
@@ -89,7 +106,7 @@ public class TeamController {
 			throw new Exception();
 		teamService.updateTeam(team);
 		ModelAndView modelAndView = new ModelAndView("home");
-		modelAndView.addObject("message", messages.getMessage("tC.edited", null, LocaleContextHolder.getLocale()));
+		modelAndView.addObject("message", messages.getMessage("tC.edited.success", null, LocaleContextHolder.getLocale()));
 		modelAndView.addObject("page", "home");
 		return modelAndView;
 	}

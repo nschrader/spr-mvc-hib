@@ -37,11 +37,11 @@
 		<td>${team.rating}</td>
 		<td>${team.organization.name}</td>
 		<td>
-		  <a href="${pageContext.request.contextPath}/team/edit/${team.id}.html">
+		  <a class="edit" href="${pageContext.request.contextPath}/team/edit/${team.id}.html">
 		    <spring:message code="nav.team.edit"/>
 		  </a>
 		  <br/>
-		  <a href="${pageContext.request.contextPath}/team/delete/${team.id}.html">
+		  <a class="delete" href="${pageContext.request.contextPath}/team/delete/${team.id}.html">
 		    <spring:message code="lot.table.delete"/>
 		  </a>
 		  <br/>

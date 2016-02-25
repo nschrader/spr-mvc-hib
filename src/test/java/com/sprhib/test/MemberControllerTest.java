@@ -77,6 +77,17 @@ public class MemberControllerTest extends JUnitBase {
 	}
 	
 	@Test
+	public void testMemberAddPageWithoutTeam() throws Exception {
+		template.execute("TRUNCATE TABLE team_member;");
+		template.execute("TRUNCATE TABLE teams;");
+		mockMvc.perform(get("/member/add"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("home"))
+			.andExpect(model().attributeExists("message"))
+			.andExpect(model().attribute("page", "home"));
+	}
+	
+	@Test
 	public void testMemberEditPage() throws Exception {
 		final int id = 1;
 		mockMvc.perform(get("/member/edit/{id}", id))
@@ -86,6 +97,18 @@ public class MemberControllerTest extends JUnitBase {
 			.andExpect(model().attributeExists("member"))
 			.andExpect(model().attribute("page", "member"));
 		mockMvc.perform(post("/member/edit/{id}", id).param("name", "Lazy Boy").param("teams", "1").param("teams", "2"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("home"))
+			.andExpect(model().attributeExists("message"))
+			.andExpect(model().attribute("page", "home"));
+	}
+	
+	@Test
+	public void testMemberEditPageWithoutTeams() throws Exception {
+		final int id = 1;
+		template.execute("TRUNCATE TABLE team_member;");
+		template.execute("TRUNCATE TABLE teams;");
+		mockMvc.perform(get("/member/edit/{id}", id))
 			.andExpect(status().isOk())
 			.andExpect(view().name("home"))
 			.andExpect(model().attributeExists("message"))

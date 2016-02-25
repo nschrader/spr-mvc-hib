@@ -1,6 +1,7 @@
 package com.sprhib.controller;
 
 import java.util.Map;
+import java.util.List;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,18 @@ public class MemberController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView addMemberPage() {
-		ModelAndView modelAndView = new ModelAndView("add-member-form");
-		modelAndView.addObject("allTeams", teamService.getTeams());
-		modelAndView.addObject("member", new Member());
-		modelAndView.addObject("page", "member");
+		ModelAndView modelAndView;
+		List<Team> teams = teamService.getTeams();
+		if (teams.isEmpty()) {
+			modelAndView = new ModelAndView("home");
+			modelAndView.addObject("message", messages.getMessage("mC.added.error", null, LocaleContextHolder.getLocale()));	
+			modelAndView.addObject("page", "home");
+		} else {
+			modelAndView = new ModelAndView("add-member-form");
+			modelAndView.addObject("allTeams", teams);
+			modelAndView.addObject("member", new Member());
+			modelAndView.addObject("page", "member");
+		}
 		return modelAndView;
 	}
 	
@@ -53,7 +62,7 @@ public class MemberController {
 			throw new Exception();
 		memberService.addMember(member);
 		ModelAndView modelAndView = new ModelAndView("home");
-		modelAndView.addObject("message", messages.getMessage("mC.added", null, LocaleContextHolder.getLocale()));	
+		modelAndView.addObject("message", messages.getMessage("mC.added.success", null, LocaleContextHolder.getLocale()));	
 		modelAndView.addObject("page", "home");
 		return modelAndView;
 	}
@@ -73,11 +82,19 @@ public class MemberController {
 	
 	@RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
 	public ModelAndView editMemberPage(@PathVariable Integer id) {
-		ModelAndView modelAndView = new ModelAndView("edit-member-form");
-		Member member = memberService.getMember(id);
-		modelAndView.addObject("allTeams", teamService.getTeams());
-		modelAndView.addObject("member", member);
-		modelAndView.addObject("page", "member");
+		ModelAndView modelAndView;
+		List<Team> teams = teamService.getTeams();
+		if (teams.isEmpty()) {
+			modelAndView = new ModelAndView("home");
+			modelAndView.addObject("message", messages.getMessage("mC.edited.error", null, LocaleContextHolder.getLocale()));	
+			modelAndView.addObject("page", "home");
+		} else {
+			modelAndView = new ModelAndView("edit-member-form");
+			Member member = memberService.getMember(id);
+			modelAndView.addObject("allTeams", teams);
+			modelAndView.addObject("member", member);
+			modelAndView.addObject("page", "member");
+		}
 		return modelAndView;
 	}
 	
@@ -94,7 +111,7 @@ public class MemberController {
 			throw new Exception();
 		memberService.updateMember(member);
 		ModelAndView modelAndView = new ModelAndView("home");
-		modelAndView.addObject("message", messages.getMessage("mC.edited", null, LocaleContextHolder.getLocale()));
+		modelAndView.addObject("message", messages.getMessage("mC.edited.success", null, LocaleContextHolder.getLocale()));
 		modelAndView.addObject("page", "home");
 		return modelAndView;
 	}

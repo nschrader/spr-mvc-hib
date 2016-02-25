@@ -20,7 +20,7 @@
 	<h1><spring:message code="nav.organization.add"/></h1>
 	<p><spring:message code="aof.description"/></p>
 	<p>${message}</p>
-	<form:form method="post" commandName="organization" action="${pageContext.request.contextPath}/organization/add.html">
+	<form:form method="post" commandName="organization" action="${pageContext.request.contextPath}/organization/add.html" onSubmit="if (this.name.value == '') {return false;}">
 	  <table class="table">
 	    <tbody>
 	      <tr>
